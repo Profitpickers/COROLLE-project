@@ -137,14 +137,6 @@
       width: 0;
       border-radius: 0 999px 999px 0;
     }
-    .lbar-fill-future {
-      height: 100%;
-      flex-shrink: 0;
-      background: linear-gradient(90deg, #ff2200, #ff0000);
-      transition: width .8s cubic-bezier(.4,0,.2,1);
-      width: 0;
-      border-radius: 0 999px 999px 0;
-    }
     .mkt-row {
       display: flex; align-items: center; justify-content: space-between;
       padding: .28rem .45rem;
@@ -368,7 +360,7 @@
       <div id="life-bars" style="display:none;flex-direction:column;gap:.6rem;flex:1;">
         <!-- labels legend -->
         <div style="display:flex;justify-content:space-between;font-size:.78rem;color:#64748b;margin-bottom:-.1rem;">
-          <span id="lc-birth-yr">—</span><span id="lc-now-yr" style="color:#a5b4fc;">—</span><span style="color:#f87171;">82y</span>
+          <span id="lc-birth-yr">—</span><span id="lc-now-yr" style="color:#a5b4fc;">—</span><span id="lc-end-yr" style="color:#f87171;">—</span>
         </div>
         <!-- Anni di vita -->
         <div>
@@ -992,8 +984,9 @@ function calcLife(){
   localStorage.setItem('tp_age',inputAge);
   const LE=82;
   const n=new Date();
-  // age in fractional years
-  const age=inputAge+(n.getMonth()/12)+(n.getDate()/365.25);
+  // age in fractional years using day-of-year for precision
+  const dayOfYear=Math.floor((n-new Date(n.getFullYear(),0,0))/(86400000));
+  const age=inputAge+(dayOfYear/365.25);
   const birthYear=n.getFullYear()-inputAge;
 
   const totalYr=LE,totalMo=LE*12;
@@ -1027,6 +1020,7 @@ function calcLife(){
 
   $('lc-birth-yr').textContent=birthYear+'y';
   $('lc-now-yr').textContent=n.getFullYear()+'y';
+  $('lc-end-yr').textContent=(birthYear+LE)+'y';
 
   $('yr-val').textContent=Math.round(elYr)+'y';
   $('yr-pct').textContent=' · '+pYr+'%';
@@ -1052,7 +1046,7 @@ function calcLife(){
   $('mi-pct').textContent=' · '+pMi+'%';
   $('mi-rem').textContent=fmtN(remMi)+'m rimasti';
 
-  $('life-sum').innerHTML='★ aspettativa media 82 anni &nbsp;|&nbsp; ≈ <strong style="color:#f8fafc">'+remYr+'</strong> anni &nbsp;·&nbsp; <strong style="color:#f8fafc">'+fmtN(remMo)+'</strong> mesi &nbsp;·&nbsp; <strong style="color:#f8fafc">'+fmtN(remDy)+'</strong> giorni rimanenti';
+  $('life-sum').innerHTML='★ aspettativa media '+LE+' anni &nbsp;|&nbsp; ≈ <strong style="color:#f8fafc">'+remYr+'</strong> anni &nbsp;·&nbsp; <strong style="color:#f8fafc">'+fmtN(remMo)+'</strong> mesi &nbsp;·&nbsp; <strong style="color:#f8fafc">'+fmtN(remDy)+'</strong> giorni rimanenti';
 
   $('life-input').style.display='none';
   $('life-bars').style.display='flex';

@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Questionario PRD — SECURDATA.PRO</title>
+  <meta name="description" content="Questionario gratuito di analisi preliminare per progetti di Sicurezza Dati e Integrazione AI — SECURDATA.PRO" />
+  <style>
+    /* ─── RESET & BASE ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue-dark:   #0a1628;
+      --blue-mid:    #0d2345;
+      --blue-accent: #1a4a8a;
+      --cyan:        #00d4ff;
+      --cyan-soft:   #00aacc;
+      --green:       #00e5a0;
+      --orange:      #ff6b35;
+      --white:       #ffffff;
+      --gray-light:  #f0f4f8;
+      --gray-mid:    #cdd5df;
+      --gray-text:   #94a3b8;
+      --radius:      8px;
+      --shadow:      0 4px 24px rgba(0,0,0,0.18);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--blue-dark);
+      color: var(--white);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ─── NAVBAR ─────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,22,40,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,212,255,0.15);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--white);
+    }
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--cyan), var(--blue-accent));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 16px; color: var(--blue-dark);
+    }
+    .nav-logo-text { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.5px; }
+    .nav-logo-text span { color: var(--cyan); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--gray-mid); text-decoration: none; font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-links .active { color: var(--cyan); }
+    .nav-badge {
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      color: var(--blue-dark); font-size: 0.75rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px; letter-spacing: 0.5px;
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 50%, #0f1f3d 100%);
+      padding: 5rem 2rem 3rem;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 30%, rgba(0,229,160,0.06) 0%, transparent 50%);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(0,212,255,0.12);
+      border: 1px solid rgba(0,212,255,0.3);
+      color: var(--cyan);
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 1px;
+      padding: 6px 16px; border-radius: 20px; margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800; line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span { color: var(--cyan); }
+    .hero p {
+      color: var(--gray-mid); font-size: 1.05rem; max-width: 640px;
+      margin: 0 auto 2rem;
+    }
+    .hero-stats {
+      display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--cyan); }
+    .stat-label { font-size: 0.8rem; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ─── PROGRESS BAR ───────────────────────────────────────────── */
+    .progress-container {
+      background: rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 1rem 2rem;
+      position: sticky; top: 64px; z-index: 90;
+    }
+    .progress-steps {
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 900px; margin: 0 auto; position: relative;
+    }
+    .progress-steps::before {
+      content: '';
+      position: absolute; top: 16px; left: 0; right: 0; height: 2px;
+      background: rgba(255,255,255,0.1);
+    }
+    .progress-line {
+      position: absolute; top: 16px; left: 0; height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+    .step-dot {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      cursor: pointer; position: relative; z-index: 1;
+    }
+    .step-circle {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700;
+      transition: all 0.3s;
+    }
+    .step-dot.active .step-circle {
+      background: var(--cyan);
+      border-color: var(--cyan);
+      color: var(--blue-dark);
+      box-shadow: 0 0 12px rgba(0,212,255,0.5);
+    }
+    .step-dot.done .step-circle {
+      background: var(--green);
+      border-color: var(--green);
+      color: var(--blue-dark);
+    }
+    .step-label {
+      font-size: 0.65rem; color: var(--gray-text);
+      text-align: center; max-width: 70px;
+      display: none;
+    }
+    @media (min-width: 600px) { .step-label { display: block; } }
+    .step-dot.active .step-label { color: var(--cyan); }
+    .step-dot.done .step-label { color: var(--green); }
+
+    /* ─── MAIN LAYOUT ────────────────────────────────────────────── */
+    main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+    /* ─── SECTION PANELS ─────────────────────────────────────────── */
+    .form-section {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+    .form-section.active { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: none; } }
+
+    .section-header {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 2rem; padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(0,212,255,0.2);
+    }
+    .section-icon {
+      width: 50px; height: 50px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .section-header h2 { font-size: 1.4rem; font-weight: 700; }
+    .section-header p { color: var(--gray-text); font-size: 0.9rem; margin-top: 2px; }
+
+    /* ─── CARDS ──────────────────────────────────────────────────── */
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: rgba(0,212,255,0.2); }
+    .card-title {
+      font-size: 0.85rem; font-weight: 700; color: var(--cyan);
+      text-transform: uppercase; letter-spacing: 0.8px;
+      margin-bottom: 1rem;
+    }
+
+    /* ─── FORM ELEMENTS ──────────────────────────────────────────── */
+    .field { margin-bottom: 1.2rem; }
+    label {
+      display: block; font-size: 0.88rem; font-weight: 600;
+      margin-bottom: 6px; color: var(--gray-mid);
+    }
+    label .req { color: var(--orange); margin-left: 3px; }
+    input[type="text"], input[type="email"], input[type="tel"],
+    input[type="url"], input[type="number"], input[type="date"],
+    select, textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius);
+      color: var(--white);
+      font-size: 0.9rem;
+      padding: 10px 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      font-family: inherit;
+    }
+    input::placeholder, textarea::placeholder { color: var(--gray-text); }
+    select option { background: var(--blue-mid); color: var(--white); }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0,212,255,0.12);
+    }
+    textarea { resize: vertical; min-height: 80px; }
+
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
+    .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    @media (max-width: 700px) { .field-row-3 { grid-template-columns: 1fr; } }
+
+    /* ─── CHECKBOX / RADIO GROUPS ────────────────────────────────── */
+    .check-group, .radio-group {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .check-group label, .radio-group label {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px; padding: 7px 12px;
+      cursor: pointer; font-weight: 400; color: var(--gray-mid);
+      font-size: 0.85rem; transition: all 0.2s;
+    }
+    .check-group label:hover, .radio-group label:hover {
+      border-color: var(--cyan); color: var(--white);
+    }
+    .check-group input[type="checkbox"],
+    .radio-group input[type="radio"] {
+      width: auto; accent-color: var(--cyan);
+    }
+
+    /* ─── RANGE SLIDER ───────────────────────────────────────────── */
+    input[type="range"] {
+      width: 100%; background: transparent; padding: 0;
+      border: none; box-shadow: none; cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 4px; border-radius: 4px;
+      background: linear-gradient(90deg, var(--cyan) var(--val, 40%), rgba(255,255,255,0.1) var(--val, 40%));
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 18px; height: 18px;
+      border-radius: 50%; background: var(--cyan);
+      margin-top: -7px; box-shadow: 0 0 6px rgba(0,212,255,0.4);
+    }
+    .range-labels { display: flex; justify-content: space-between; margin-top: 4px; }
+    .range-labels span { font-size: 0.75rem; color: var(--gray-text); }
+    .range-value {
+      text-align: center; font-weight: 700; color: var(--cyan);
+      font-size: 1.1rem; margin-top: 4px;
+    }
+
+    /* ─── TABLE INPUTS ───────────────────────────────────────────── */
+    .table-input { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+    .table-input th {
+      background: rgba(0,212,255,0.1);
+      color: var(--cyan); font-size: 0.78rem;
+      padding: 8px 10px; text-align: left; font-weight: 600;
+      border-bottom: 1px solid rgba(0,212,255,0.2);
+    }
+    .table-input td { padding: 6px 4px; }
+    .table-input tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .table-input input, .table-input select {
+      padding: 6px 10px; font-size: 0.82rem;
+    }
+    .add-row-btn {
+      background: rgba(0,212,255,0.1); border: 1px dashed rgba(0,212,255,0.3);
+      color: var(--cyan); border-radius: 6px; padding: 6px 14px;
+      font-size: 0.82rem; cursor: pointer; margin-top: 6px;
+      transition: background 0.2s;
+    }
+    .add-row-btn:hover { background: rgba(0,212,255,0.2); }
+
+    /* ─── ALERT BOXES ────────────────────────────────────────────── */
+    .alert {
+      border-radius: var(--radius); padding: 1rem 1.2rem;
+      margin-bottom: 1.5rem; font-size: 0.88rem; display: flex; gap: 10px;
+    }
+    .alert-info {
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.25);
+      color: #a8d8ea;
+    }
+    .alert-warning {
+      background: rgba(255,107,53,0.08);
+      border: 1px solid rgba(255,107,53,0.3);
+      color: #f4b083;
+    }
+    .alert-success {
+      background: rgba(0,229,160,0.08);
+      border: 1px solid rgba(0,229,160,0.25);
+      color: #7ff0c5;
+    }
+
+    /* ─── NAVIGATION BUTTONS ─────────────────────────────────────── */
+    .nav-buttons {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 2.5rem; padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: var(--radius);
+      font-size: 0.92rem; font-weight: 700; cursor: pointer;
+      border: none; transition: all 0.2s; text-decoration: none;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), var(--blue-accent));
+      color: var(--blue-dark);
+      box-shadow: 0 4px 20px rgba(0,212,255,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(0,212,255,0.45); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      color: var(--gray-mid);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); color: var(--white); }
+    .btn-success {
+      background: linear-gradient(135deg, var(--green), #00b37a);
+      color: var(--blue-dark);
+      box-shadow: 0 4px 20px rgba(0,229,160,0.3);
+    }
+    .btn-success:hover { transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+    /* ─── SUMMARY TABLE ──────────────────────────────────────────── */
+    #summary-section { display: none; }
+    .summary-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 600px) { .summary-grid { grid-template-columns: 1fr; } }
+    .summary-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius); padding: 1.2rem;
+    }
+    .summary-card h4 {
+      font-size: 0.8rem; color: var(--cyan); text-transform: uppercase;
+      letter-spacing: 0.8px; margin-bottom: 0.8rem;
+    }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.82rem; gap: 12px;
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-key { color: var(--gray-text); flex-shrink: 0; }
+    .summary-val { color: var(--white); font-weight: 600; text-align: right; word-break: break-word; }
+    .summary-val.empty { color: var(--orange); font-weight: 400; font-style: italic; }
+
+    .dataset-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    .dataset-table th {
+      background: rgba(0,212,255,0.12); color: var(--cyan);
+      font-size: 0.78rem; padding: 10px 12px; text-align: left;
+      border-bottom: 1px solid rgba(0,212,255,0.2);
+    }
+    .dataset-table td {
+      padding: 9px 12px; font-size: 0.84rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .dataset-table tr:hover td { background: rgba(255,255,255,0.03); }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 0.72rem; font-weight: 700;
+    }
+    .badge-high { background: rgba(255,107,53,0.2); color: #ff8c5c; }
+    .badge-med  { background: rgba(0,212,255,0.15); color: var(--cyan); }
+    .badge-low  { background: rgba(0,229,160,0.15); color: var(--green); }
+    .badge-yes  { background: rgba(0,229,160,0.15); color: var(--green); }
+    .badge-no   { background: rgba(255,107,53,0.15); color: #ff8c5c; }
+    .badge-nd   { background: rgba(255,255,255,0.08); color: var(--gray-text); }
+
+    /* ─── PRINT ──────────────────────────────────────────────────── */
+    @media print {
+      nav, .progress-container, .nav-buttons, .hero, .add-row-btn { display: none !important; }
+      body { background: white; color: #111; }
+      .card { border: 1px solid #ddd; background: white; }
+      .dataset-table th { background: #eee; color: #333; }
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────────── */
+    footer {
+      text-align: center; padding: 2rem;
+      color: var(--gray-text); font-size: 0.82rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ NAVBAR -->
+<nav>
+  <a href="https://securdata.pro" class="nav-logo">
+    <div class="nav-logo-icon">SD</div>
+    <span class="nav-logo-text">SECUR<span>DATA</span>.PRO</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="https://securdata.pro">Home</a></li>
+    <li><a href="https://securdata.pro/servizi">Servizi</a></li>
+    <li><a href="https://securdata.pro/risorse-gratuite" class="active">Risorse Gratuite</a></li>
+    <li><a href="https://securdata.pro/contatti">Contatti</a></li>
+  </ul>
+  <span class="nav-badge">🎁 GRATUITO</span>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════ HERO -->
+<div class="hero">
+  <div class="hero-badge">📋 Risorsa Gratuita — Risorse Gratuite</div>
+  <h1>Questionario di Analisi<br><span>Progetto PRD</span></h1>
+  <p>Compila il questionario completo per permetterci di elaborare lo Studio di Fattibilità, il Preventivo e il Piano di Progetto personalizzato per la tua azienda.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">9</div><div class="stat-label">Sezioni</div></div>
+    <div class="stat"><div class="stat-num">~25</div><div class="stat-label">Minuti</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Gratuito</div></div>
+    <div class="stat"><div class="stat-num">🔒</div><div class="stat-label">Dati Protetti</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ PROGRESS -->
+<div class="progress-container">
+  <div class="progress-steps" id="stepsBar">
+    <div class="progress-line" id="progressLine"></div>
+    <!-- dots injected by JS -->
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ MAIN FORM -->
+<main>
+<form id="prdForm" novalidate>
+
+  <!-- ╔══════════════════════════════════════════ STEP 0 ══╗ -->
+  <div class="form-section active" data-step="0">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#00d4ff22,#00d4ff44)">🎯</div>
+      <div>
+        <h2>Sezione 0 — Tipologia del Progetto</h2>
+        <p>Definisci il contesto, la natura del progetto e la maturità digitale della tua organizzazione</p>
+      </div>
+    </div>
+
+    <div class="alert alert-info">ℹ️ <span>Questa è la sezione più importante: guida l'intero processo di analisi. Rispondi con la massima precisione possibile.</span></div>
+
+    <div class="card">
+      <div class="card-title">Natura del Progetto</div>
+      <div class="field">
+        <label>Tipo di progetto <span class="req">*</span></label>
+        <div class="check-group">
+          <label><input type="checkbox" name="tipo_progetto" value="app_esterna"> APP esterna</label>
+          <label><input type="checkbox" name="tipo_progetto" value="integrazione_ai"> Integrazione AI in azienda</label>
+          <label><input type="checkbox" name="tipo_progetto" value="chatbot"> Chatbot / Assistente virtuale</label>
+          <label><input type="checkbox" name="tipo_progetto" value="automazione"> Automazione processi (RPA)</label>
+          <label><input type="checkbox" name="tipo_progetto" value="data_platform"> Piattaforma dati / Data Lake</label>
+          <label><input type="checkbox" name="tipo_progetto" value="sicurezza"> Sistema di sicurezza informatica</label>
+          <label><input type="checkbox" name="tipo_progetto" value="compliance"> Progetto compliance (GDPR/NIS2)</label>
+          <label><input type="checkbox" name="tipo_progetto" value="rag"> RAG / Knowledge Base aziendale</label>
+          <label><input type="checkbox" name="tipo_progetto" value="bi"> Business Intelligence / Analytics</label>
+          <label><input type="checkbox" name="tipo_progetto" value="computer_vision"> Computer Vision</label>
+          <label><input type="checkbox" name="tipo_progetto" value="nlp"> NLP / Elaborazione testo</label>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Uso del progetto <span class="req">*</span></label>
+          <select name="uso_progetto" required>
+            <option value="">— Seleziona —</option>
+            <option>Solo interno all'organizzazione</option>
+            <option>Solo esterno (clienti/pubblico)</option>
+            <option>Entrambi (interno + esterno)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Destinatario finale <span class="req">*</span></label>
+          <select name="destinatario" required>
+            <option value="">— Seleziona —</option>
+            <option>Grande azienda / Enterprise</option>
+            <option>PMI (10–250 dipendenti)</option>
+            <option>Micro-impresa (< 10 dipendenti)</option>
+            <option>Professionista autonomo / Freelance</option>
+            <option>Privato cittadino / Consumer</option>
+            <option>Pubblica Amministrazione</option>
+            <option>Nonprofit / Associazione</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Mercato & Settore</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Settore aziendale <span class="req">*</span></label>
+          <select name="settore" required>
+            <option value="">— Seleziona settore —</option>
+            <option>Manifatturiero / Industria</option>
+            <option>Commercio al dettaglio / E-commerce</option>
+            <option>Servizi professionali (legale, contabile)</option>
+            <option>Sanità / Pharma / Medicale</option>
+            <option>Finanza / Assicurazioni / Fintech</option>
+            <option>Edilizia / Real estate</option>
+            <option>Turismo / Hospitality / Food &amp; Beverage</option>
+            <option>Logistica / Trasporti</option>
+            <option>Energia / Utilities</option>
+            <option>Istruzione / Formazione</option>
+            <option>Pubblica Amministrazione</option>
+            <option>Media / Comunicazione / Marketing</option>
+            <option>Tecnologia / Software / SaaS</option>
+            <option>Altro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Mercato geografico target</label>
+          <select name="mercato_geo">
+            <option value="">— Seleziona —</option>
+            <option>Locale (comune / provincia)</option>
+            <option>Regionale</option>
+            <option>Nazionale</option>
+            <option>Europeo (EU/EEA)</option>
+            <option>Internazionale (fuori EU)</option>
+            <option>Globale</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Contesto & Obiettivo</div>
+      <div class="field">
+        <label>Descrivi il problema concreto che questo progetto deve risolvere <span class="req">*</span></label>
+        <textarea name="problema" placeholder="Es: Il nostro ufficio commerciale perde 4 ore al giorno a classificare manualmente le email dei clienti..." required></textarea>
+      </div>
+      <div class="field">
+        <label>Output/deliverable atteso <span class="req">*</span></label>
+        <div class="check-group">
+          <label><input type="checkbox" name="deliverable" value="software"> Software funzionante deployato</label>
+          <label><input type="checkbox" name="deliverable" value="modello_ai"> Modello AI addestrato e integrato</label>
+          <label><input type="checkbox" name="deliverable" value="automazione"> Processo aziendale automatizzato</label>
+          <label><input type="checkbox" name="deliverable" value="sicurezza"> Sistema di sicurezza attivo</label>
+          <label><input type="checkbox" name="deliverable" value="dataset"> Dataset strutturato e certificato</label>
+          <label><input type="checkbox" name="deliverable" value="formazione"> Formazione del personale</label>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Scadenza/data target primo risultato</label>
+          <input type="date" name="scadenza_target" />
+        </div>
+        <div class="field">
+          <label>Esistono vincoli normativi/contrattuali di tempo?</label>
+          <select name="vincoli_tempo">
+            <option value="">— Seleziona —</option>
+            <option>Sì — scadenza normativa obbligatoria</option>
+            <option>Sì — scadenza contrattuale con cliente</option>
+            <option>Sì — opportunità di mercato a termine</option>
+            <option>No — timeline flessibile</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Maturità Digitale</div>
+      <div class="field">
+        <label>Livello di maturità digitale della tua organizzazione</label>
+        <input type="range" name="maturita_digitale" min="1" max="5" value="2"
+               oninput="updateRange(this)" style="--val:20%">
+        <div class="range-labels">
+          <span>1 — Solo carta/telefono</span>
+          <span>2 — Email/Office</span>
+          <span>3 — Gestionale/CRM</span>
+          <span>4 — Cloud/API</span>
+          <span>5 — Data-driven/AI</span>
+        </div>
+        <div class="range-value" id="maturitaVal">Livello 2</div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>IT interno?</label>
+          <select name="it_interno">
+            <option>Sì, team IT strutturato</option>
+            <option>Sì, una persona sola</option>
+            <option>No, consulenti esterni</option>
+            <option>No, nessuna funzione IT</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Esperienze precedenti con AI?</label>
+          <select name="exp_ai">
+            <option>Prima volta</option>
+            <option>Sì, con buoni risultati</option>
+            <option>Sì, con risultati deludenti</option>
+            <option>In corso (altri progetti paralleli)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Strumenti digitali già in uso</label>
+        <input type="text" name="strumenti_esistenti" placeholder="Es: Office 365, Salesforce, SAP, Trello, Google Workspace..." />
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Processi Ripetitivi & Automatizzabili</div>
+      <p style="color:var(--gray-text);font-size:0.85rem;margin-bottom:1rem">Elenca i processi manuali e ripetitivi che vorresti automatizzare:</p>
+      <div style="overflow-x:auto">
+        <table class="table-input" id="processiTable">
+          <thead>
+            <tr>
+              <th>Processo</th>
+              <th>Frequenza</th>
+              <th>Chi lo esegue</th>
+              <th>Ore/settimana</th>
+              <th>Priorità</th>
+            </tr>
+          </thead>
+          <tbody id="processiBody">
+            <tr>
+              <td><input type="text" name="proc_nome_1" placeholder="Es: classificazione email" /></td>
+              <td><select name="proc_freq_1"><option>Quotidiana</option><option>Settimanale</option><option>Mensile</option></select></td>
+              <td><input type="text" name="proc_chi_1" placeholder="Commerciale" /></td>
+              <td><input type="number" name="proc_ore_1" min="0" max="40" placeholder="4" /></td>
+              <td><select name="proc_prio_1"><option>Alta</option><option>Media</option><option>Bassa</option></select></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button type="button" class="add-row-btn" onclick="addProcessRow()">+ Aggiungi processo</button>
+    </div>
+
+    <div class="nav-buttons">
+      <span></span>
+      <button type="button" class="btn btn-primary" onclick="nextStep()">Continua — Anagrafica →</button>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════ STEP 1 ══╗ -->
+  <div class="form-section" data-step="1">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#1a4a8a33,#1a4a8a66)">📁</div>
+      <div>
+        <h2>Sezione 1 — Anagrafica Progetto</h2>
+        <p>Dati identificativi del progetto e dell'organizzazione richiedente</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Identità del Progetto</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Nome del progetto <span class="req">*</span></label>
+          <input type="text" name="nome_progetto" placeholder="Es: ProgettoAI-Vendite2025" required />
+        </div>
+        <div class="field">
+          <label>Nome commerciale / brand</label>
+          <input type="text" name="brand" placeholder="Es: SalesBot Pro" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Data di avvio prevista</label>
+          <input type="date" name="data_avvio" />
+        </div>
+        <div class="field">
+          <label>Data target lancio MVP</label>
+          <input type="date" name="data_mvp" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Elevator pitch — descrivi il progetto in 2–3 righe <span class="req">*</span></label>
+        <textarea name="elevator_pitch" placeholder="Es: Un assistente AI che analizza automaticamente le richieste dei clienti via email, le classifica per urgenza e genera bozze di risposta personalizzate..." required></textarea>
+      </div>
+      <div class="field">
+        <label>Perché adesso? Qual è il trigger che rende urgente questo progetto?</label>
+        <textarea name="trigger" placeholder="Es: Abbiamo perso 3 clienti importanti per tempi di risposta lenti. Il competitor principale ha già introdotto un chatbot AI..."></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Dati Aziendali del Committente</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Ragione sociale <span class="req">*</span></label>
+          <input type="text" name="ragione_sociale" required />
+        </div>
+        <div class="field">
+          <label>Forma giuridica</label>
+          <select name="forma_giuridica">
+            <option value="">— Seleziona —</option>
+            <option>SRL / SRLS</option>
+            <option>SPA</option>
+            <option>SNC / SAS</option>
+            <option>Ditta individuale</option>
+            <option>Libero professionista</option>
+            <option>Privato cittadino</option>
+            <option>Associazione / Nonprofit</option>
+            <option>Pubblica Amministrazione</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Partita IVA</label>
+          <input type="text" name="piva" placeholder="IT12345678901" />
+        </div>
+        <div class="field">
+          <label>Codice Fiscale</label>
+          <input type="text" name="codice_fiscale" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Sede legale (via, CAP, città, provincia)</label>
+        <input type="text" name="sede_legale" placeholder="Via Esempio 1, 20100 Milano MI" />
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Sito web</label>
+          <input type="url" name="sito_web" placeholder="https://" />
+        </div>
+        <div class="field">
+          <label>PEC</label>
+          <input type="email" name="pec" placeholder="nomecognome@pec.it" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>N. dipendenti</label>
+          <select name="num_dipendenti">
+            <option value="">— Seleziona —</option>
+            <option>Solo io</option>
+            <option>2–5</option>
+            <option>6–15</option>
+            <option>16–50</option>
+            <option>51–250</option>
+            <option>Più di 250</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Fatturato annuo (fascia)</label>
+          <select name="fatturato">
+            <option value="">— Seleziona —</option>
+            <option>Sotto € 100.000</option>
+            <option>€ 100.000 – € 500.000</option>
+            <option>€ 500.000 – € 2.000.000</option>
+            <option>€ 2.000.000 – € 10.000.000</option>
+            <option>Oltre € 10.000.000</option>
+            <option>Preferisco non indicarlo</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Referente Principale (Decisore)</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Nome e Cognome <span class="req">*</span></label>
+          <input type="text" name="referente_nome" required />
+        </div>
+        <div class="field">
+          <label>Ruolo in azienda</label>
+          <input type="text" name="referente_ruolo" placeholder="CEO, CTO, Responsabile IT..." />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Email diretta <span class="req">*</span></label>
+          <input type="email" name="referente_email" required />
+        </div>
+        <div class="field">
+          <label>Telefono / Mobile <span class="req">*</span></label>
+          <input type="tel" name="referente_tel" required />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>LinkedIn</label>
+          <input type="url" name="referente_linkedin" placeholder="https://linkedin.com/in/..." />
+        </div>
+        <div class="field">
+          <label>Disponibilità per riunioni</label>
+          <input type="text" name="referente_disponibilita" placeholder="Es: Lun–Ven 9:00–18:00" />
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button type="button" class="btn btn-secondary" onclick="prevStep()">← Indietro</button>
+      <button type="button" class="btn btn-primary" onclick="nextStep()">Continua — Business Model →</button>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════ STEP 2 ══╗ -->
+  <div class="form-section" data-step="2">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#ff6b3533,#ff6b3566)">💼</div>
+      <div>
+        <h2>Sezione 2 — Business Model</h2>
+        <p>Visione, utenti target, monetizzazione e go-to-market</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Visione & Posizionamento</div>
+      <div class="field">
+        <label>Value Proposition in una sola frase <span class="req">*</span></label>
+        <input type="text" name="value_prop" placeholder="Es: Il primo sistema AI che riduce del 70% i tempi di risposta al cliente nelle PMI manifatturiere." required />
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Tipo di mercato</label>
+          <select name="tipo_mercato">
+            <option>B2B (business to business)</option>
+            <option>B2C (business to consumer)</option>
+            <option>B2B2C</option>
+            <option>Uso interno non commercializzato</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Modello di revenue</label>
+          <select name="modello_revenue">
+            <option>Freemium</option>
+            <option>Subscription SaaS mensile</option>
+            <option>Subscription SaaS annuale</option>
+            <option>One-time purchase (licenza)</option>
+            <option>Pay-per-use (crediti/token)</option>
+            <option>Progetto chiavi in mano</option>
+            <option>Canone manutenzione + sviluppo</option>
+            <option>Consulenza + tool incluso</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Principali pain point degli utenti (max 3)</label>
+        <input type="text" name="pain1" placeholder="Pain point 1" style="margin-bottom:6px" />
+        <input type="text" name="pain2" placeholder="Pain point 2" style="margin-bottom:6px" />
+        <input type="text" name="pain3" placeholder="Pain point 3" />
+      </div>
+      <div class="field">
+        <label>Killer feature — funzionalità core che rende il prodotto irrinunciabile</label>
+        <textarea name="killer_feature" placeholder="Es: Risponde automaticamente al 80% delle email dei clienti in meno di 30 secondi usando il contesto storico degli ordini."></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Budget del Progetto</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Budget disponibile per sviluppo/implementazione</label>
+          <select name="budget_sviluppo">
+            <option value="">— Seleziona fascia —</option>
+            <option>Sotto € 5.000</option>
+            <option>€ 5.000 – € 15.000</option>
+            <option>€ 15.000 – € 30.000</option>
+            <option>€ 30.000 – € 80.000</option>
+            <option>€ 80.000 – € 200.000</option>
+            <option>Oltre € 200.000</option>
+            <option>Da definire</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Budget annuo manutenzione/canone stimato</label>
+          <select name="budget_manutenzione">
+            <option value="">— Seleziona —</option>
+            <option>Sotto € 500/mese</option>
+            <option>€ 500 – € 2.000/mese</option>
+            <option>€ 2.000 – € 5.000/mese</option>
+            <option>Oltre € 5.000/mese</option>
+            <option>Da definire</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Piano di finanziamento</label>
+        <div class="radio-group">
+          <label><input type="radio" name="finanziamento" value="auto"> Autofinanziamento</label>
+          <label><input type="radio" name="finanziamento" value="investitori"> Investitori / VC</label>
+          <label><input type="radio" name="finanziamento" value="bandi"> Bandi / Contributi pubblici</label>
+          <label><input type="radio" name="finanziamento" value="misto"> Misto</label>
+          <label><input type="radio" name="finanziamento" value="definire"> Da definire</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button type="button" class="btn btn-secondary" onclick="prevStep()">← Indietro</button>
+      <button type="button" class="btn btn-primary" onclick="nextStep()">Continua — Dataset & AI →</button>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════ STEP 3 ══╗ -->
+  <div class="form-section" data-step="3">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#00e5a033,#00e5a066)">🤖</div>
+      <div>
+        <h2>Sezione 3 — Dataset, Dati & AI</h2>
+        <p>Disponibilità dati, stato etichettatura, Q&amp;A esistente, formazione del personale</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Disponibilità Dati Aziendali</div>
+      <div class="field">
+        <label>Hai già dati pronti per addestrare/alimentare il sistema AI? <span class="req">*</span></label>
+        <div class="radio-group">
+          <label><input type="radio" name="dati_pronti" value="si_organizzati" required> Sì, pronti e organizzati</label>
+          <label><input type="radio" name="dati_pronti" value="si_dispersi"> Sì, ma dispersi</label>
+          <label><input type="radio" name="dati_pronti" value="parziali"> Solo parzialmente</label>
+          <label><input type="radio" name="dati_pronti" value="no"> No, da raccogliere</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Tipologie di dati disponibili <span class="req">*</span></label>
+        <div class="check-group">
+          <label><input type="checkbox" name="tipo_dati" value="pdf_word"> Documenti PDF/Word</label>
+          <label><input type="checkbox" name="tipo_dati" value="email"> Email / Comunicazioni</label>
+          <label><input type="checkbox" name="tipo_dati" value="manuali"> Manuali / Procedure</label>
+          <label><input type="checkbox" name="tipo_dati" value="cartaceo"> Documenti cartacei</label>
+          <label><input type="checkbox" name="tipo_dati" value="audio"> File audio (call, riunioni)</label>
+          <label><input type="checkbox" name="tipo_dati" value="video"> File video (formazione)</label>
+          <label><input type="checkbox" name="tipo_dati" value="foto"> Foto / Immagini</label>
+          <label><input type="checkbox" name="tipo_dati" value="database"> Database strutturati (SQL/CSV)</label>
+          <label><input type="checkbox" name="tipo_dati" value="excel"> Fogli di calcolo (Excel)</label>
+          <label><input type="checkbox" name="tipo_dati" value="erp_crm"> Dati da ERP/CRM</label>
+          <label><input type="checkbox" name="tipo_dati" value="contratti"> Contratti / Documenti legali</label>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>% dati già in formato digitale</label>
+          <input type="range" name="perc_digitale" min="0" max="100" value="50"
+                 oninput="updateRange(this)" style="--val:50%">
+          <div class="range-labels"><span>0%</span><span>50%</span><span>100%</span></div>
+          <div class="range-value" id="percDigitaleVal">50%</div>
+        </div>
+        <div class="field">
+          <label>Qualità / pulizia dati</label>
+          <select name="qualita_dati">
+            <option>Già puliti e strutturati</option>
+            <option>Parzialmente strutturati</option>
+            <option>Non strutturati — richiedono preprocessing</option>
+            <option>Non lo so</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Etichettatura (Labeling) dei Dati</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Classificazione/etichettatura già presente?</label>
+          <select name="labeling_stato">
+            <option>Sì, sistema organizzato</option>
+            <option>Parzialmente</option>
+            <option>No, da creare</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Trascrizione audio/video disponibile?</label>
+          <select name="trascrizione">
+            <option>Non applicabile</option>
+            <option>Sì, tutto trascritto</option>
+            <option>Parzialmente</option>
+            <option>No, da fare</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Chi gestirà il processo di etichettatura?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="chi_labeling" value="interno"> Team interno già disponibile</label>
+          <label><input type="radio" name="chi_labeling" value="formare"> Da formare internamente</label>
+          <label><input type="radio" name="chi_labeling" value="outsource"> Esternalizzare</label>
+          <label><input type="radio" name="chi_labeling" value="securdata"> SECURDATA.PRO</label>
+          <label><input type="radio" name="chi_labeling" value="nonso"> Non so</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Base di Conoscenza & Q&amp;A</div>
+      <div class="field">
+        <label>Hai già un set di domande/risposte (Q&amp;A) strutturato?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="qa_stato" value="si_completo"> Sì, documento Q&amp;A pronto e validato</label>
+          <label><input type="radio" name="qa_stato" value="si_faq"> Sì, ho FAQ esistente</label>
+          <label><input type="radio" name="qa_stato" value="parziale"> Elenco parziale di domande</label>
+          <label><input type="radio" name="qa_stato" value="no"> No, da costruire</label>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>N° coppie Q&amp;A stimate necessarie</label>
+          <select name="qa_quantita">
+            <option>Meno di 50</option>
+            <option>50–200</option>
+            <option>200–1.000</option>
+            <option>Più di 1.000</option>
+            <option>Non lo so</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tono richiesto per il sistema AI</label>
+          <select name="tono_ai">
+            <option>Formale e professionale</option>
+            <option>Amichevole e informale</option>
+            <option>Tecnico e preciso</option>
+            <option>Neutro / istituzionale</option>
+            <option>Da definire</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Argomenti "off-limits" che il sistema AI non deve mai trattare</label>
+        <textarea name="off_limits" placeholder="Es: Informazioni sui prezzi dei competitor, dati finanziari riservati, questioni legali pendenti..." style="min-height:60px"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Formazione del Personale</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Piano di formazione esistente?</label>
+          <select name="piano_formazione">
+            <option>No, da costruire</option>
+            <option>Sì, strutturato e documentato</option>
+            <option>Materiale informale non strutturato</option>
+            <option>Non prevista formazione</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>N° persone da formare</label>
+          <select name="n_da_formare">
+            <option>1–5</option>
+            <option>6–20</option>
+            <option>21–100</option>
+            <option>Più di 100</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Livello tecnico medio del personale</label>
+          <select name="livello_tecnico_personale">
+            <option>Nessuna competenza tecnica</option>
+            <option>Competenze base (email, Office)</option>
+            <option>Competenze intermedie (CRM, gestionali)</option>
+            <option>Competenze avanzate (IT, sviluppatori)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Gestione post-lancio</label>
+          <select name="gestione_postlancio">
+            <option>Team interno</option>
+            <option>SECURDATA.PRO in outsourcing</option>
+            <option>Ibrido (interno + supporto SECURDATA)</option>
+            <option>Da definire</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Requisiti Specifici AI</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Deployment AI preferito <span class="req">*</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="ai_deploy" value="locale" required> Solo on-premise (nessun dato esterno)</label>
+            <label><input type="radio" name="ai_deploy" value="cloud"> Cloud (OpenAI, Azure, Google)</label>
+            <label><input type="radio" name="ai_deploy" value="ibrido"> Ibrido</label>
+            <label><input type="radio" name="ai_deploy" value="nonso"> Non so</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Spiegabilità AI richiesta?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="explainability" value="si"> Sì, obbligatoria</label>
+            <label><input type="radio" name="explainability" value="desid"> Desiderabile</label>
+            <label><input type="radio" name="explainability" value="no"> No</label>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Audit log del sistema AI richiesto?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="audit_ai" value="si"> Sì, obbligatorio (settore regolamentato)</label>
+          <label><input type="radio" name="audit_ai" value="parz"> Parziale</label>
+          <label><input type="radio" name="audit_ai" value="no"> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Metrica di successo principale per il sistema AI</label>
+        <select name="metrica_ai">
+          <option>Accuratezza delle risposte (% corrette)</option>
+          <option>Riduzione tempo gestione richieste</option>
+          <option>Riduzione costi operativi</option>
+          <option>Soddisfazione utente / NPS</option>
+          <option>N° processi automatizzati</option>
+          <option>ROI misurabile entro 12 mesi</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button type="button" class="btn btn-secondary" onclick="prevStep()">← Indietro</button>
+      <button type="button" class="btn btn-primary" onclick="nextStep()">Continua — Architettura →</button>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════ STEP 4 ══╗ -->
+  <div class="form-section" data-step="4">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#7c3aed33,#7c3aed66)">⚙️</div>
+      <div>
+        <h2>Sezione 4 — Architettura Tecnica</h2>
+        <p>Stack tecnologico, integrazioni, scalabilità e roadmap tecnica</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Infrastruttura & Preferenze Tecnologiche</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Preferenza hosting/cloud</label>
+          <select name="hosting">
+            <option value="">— Seleziona —</option>
+            <option>On-premise (server proprio)</option>
+            <option>AWS</option>
+            <option>Microsoft Azure</option>
+            <option>Google Cloud</option>
+            <option>Altro cloud provider</option>
+            <option>Nessuna preferenza / consiglio SECURDATA</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Sistema operativo preferito (server)</label>
+          <select name="os_server">
+            <option>Linux (consigliato)</option>
+            <option>Windows Server</option>
+            <option>Nessuna preferenza</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Sistemi legacy/esistenti da integrare o sostituire</label>
+        <textarea name="sistemi_legacy" placeholder="Es: Gestionale Zucchetti, CRM Microsoft Dynamics 2016, database Access..." style="min-height:60px"></textarea>
+      </div>
+      <div class="field">
+        <label>Vincoli hardware (RAM, CPU, GPU, storage)</label>
+        <textarea name="vincoli_hw" placeholder="Es: Server esistente: Dell PowerEdge con 32GB RAM, nessuna GPU disponibile..." style="min-height:60px"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Integrazioni con Sistemi Esterni</div>
+      <div style="overflow-x:auto">
+        <table class="table-input" id="integrazioniTable">
+          <thead>
+            <tr>
+              <th>Servizio / API</th>
+              <th>Scopo</th>
+              <th>Stato</th>
+              <th>Budget/mese €</th>
+            </tr>
+          </thead>
+          <tbody id="integrazioniBody">
+            <tr>
+              <td><input type="text" name="int_nome_1" placeholder="Es: OpenAI API" /></td>
+              <td><input type="text" name="int_scopo_1" placeholder="Generazione risposte AI" /></td>
+              <td><select name="int_stato_1"><option>Pianificato</option><option>Attivo</option><option>Da valutare</option></select></td>
+              <td><input type="number" name="int_budget_1" placeholder="200" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button type="button" class="add-row-btn" onclick="addIntegrazioniRow()">+ Aggiungi integrazione</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Scalabilità & Performance</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Utenti concorrenti attesi al lancio</label>
+          <input type="number" name="utenti_lancio" placeholder="Es: 10" />
+        </div>
+        <div class="field">
+          <label>Utenti concorrenti a 12 mesi</label>
+          <input type="number" name="utenti_12mesi" placeholder="Es: 150" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>RTO — Max ore interruzione tollerabile</label>
+          <select name="rto">
+            <option>Meno di 1 ora (business critical)</option>
+            <option>1–4 ore</option>
+            <option>4–24 ore</option>
+            <option>Più di 24 ore</option>
+            <option>Non critico</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>RPO — Max perdita dati tollerabile</label>
+          <select name="rpo">
+            <option>Zero (zero data loss)</option>
+            <option>Meno di 1 ora</option>
+            <option>1–24 ore</option>
+            <option>Più di 24 ore</option>
+            <option>Non critico</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button type="button" class="btn btn-secondary" onclick="prevStep()">← Indietro</button>
+      <button type="button" class="btn btn-primary" onclick="nextStep()">Continua — Sicurezza →</button>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════ STEP 5 ══╗ -->
+  <div class="form-section" data-step="5">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#ef444433,#ef444466)">🔒</div>
+      <div>
+        <h2>Sezione 5 — Sicurezza Dati & Compliance</h2>
+        <p>Valutazione rischio attuale, normative applicabili, misure esistenti</p>
+      </div>
+    </div>
+
+    <div class="alert alert-warning">⚠️ <span>Questa sezione è critica per qualsiasi progetto SECURDATA.PRO. Non sottovalutare la sicurezza: la maggior parte delle violazioni colpisce PMI e professionisti autonomi.</span></div>
+
+    <div class="card">
+      <div class="card-title">Valutazione Rischio Attuale</div>
+      <div class="field">
+        <label>La vostra organizzazione ha mai subito incidenti informatici?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="incidenti_passati" value="si"> Sì</label>
+          <label><input type="radio" name="incidenti_passati" value="no"> No, mai</label>
+          <label><input type="radio" name="incidenti_passati" value="nonso"> Non ne siamo a conoscenza</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Principali minacce percepite</label>
+        <div class="check-group">
+          <label><input type="checkbox" name="minacce" value="ransomware"> Ransomware / malware</label>
+          <label><input type="checkbox" name="minacce" value="phishing"> Phishing / social engineering</label>
+          <label><input type="checkbox" name="minacce" value="accesso_non_autorizzato"> Accesso non autorizzato interno</label>
+          <label><input type="checkbox" name="minacce" value="furto_dati"> Furto dati da fornitori</label>
+          <label><input type="checkbox" name="minacce" value="ddos"> Attacchi DDoS</label>
+          <label><input type="checkbox" name="minacce" value="vuln_web"> Vulnerabilità web/app</label>
+          <label><input type="checkbox" name="minacce" value="perdita_accidentale"> Perdita dati accidentale</label>
+          <label><input type="checkbox" name="minacce" value="nessuna_percezione"> Nessuna percezione chiara</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Normative Applicabili</div>
+      <div class="field">
+        <label>Normative di sicurezza e privacy applicabili alla vostra organizzazione</label>
+        <div class="check-group">
+          <label><input type="checkbox" name="normative" value="gdpr"> GDPR (dati personali EU)</label>
+          <label><input type="checkbox" name="normative" value="nis2"> NIS2 (operatori essenziali)</label>
+          <label><input type="checkbox" name="normative" value="dora"> DORA (settore finanziario)</label>
+          <label><input type="checkbox" name="normative" value="iso27001"> ISO/IEC 27001</label>
+          <label><input type="checkbox" name="normative" value="soc2"> SOC 2</label>
+          <label><input type="checkbox" name="normative" value="pcidss"> PCI-DSS (pagamenti)</label>
+          <label><input type="checkbox" name="normative" value="hipaa"> HIPAA (sanità USA)</label>
+          <label><input type="checkbox" name="normative" value="nessuna"> Nessuna / Non so</label>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>DPO (Data Protection Officer) nominato?</label>
+          <select name="dpo">
+            <option>No</option>
+            <option>Sì, interno</option>
+            <option>Sì, esterno / consulente</option>
+            <option>Non obbligatorio per noi</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Registro dei Trattamenti (GDPR art. 30)?</label>
+          <select name="registro_trattamenti">
+            <option>No</option>
+            <option>Sì, aggiornato</option>
+            <option>Sì, non aggiornato</option>
+            <option>Non obbligatorio per noi</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Misure di Sicurezza Esistenti</div>
+      <div class="field">
+        <label>Misure già attive</label>
+        <div class="check-group">
+          <label><input type="checkbox" name="misure" value="antivirus"> Antivirus / EDR su endpoint</label>
+          <label><input type="checkbox" name="misure" value="firewall"> Firewall di rete</label>
+          <label><input type="checkbox" name="misure" value="vpn"> VPN accesso remoto</label>
+          <label><input type="checkbox" name="misure" value="mfa"> 2FA / MFA</label>
+          <label><input type="checkbox" name="misure" value="pwmanager"> Password manager</label>
+          <label><input type="checkbox" name="misure" value="crittografia"> Crittografia dispositivi</label>
+          <label><input type="checkbox" name="misure" value="backup"> Backup automatici</label>
+          <label><input type="checkbox" name="misure" value="patch"> Patch management</label>
+          <label><input type="checkbox" name="misure" value="rete_separata"> Reti separate (guest/op/server)</label>
+          <label><input type="checkbox" name="misure" value="formazione_cyber"> Formazione cybersecurity staff</label>
+          <label><input type="checkbox" name="misure" value="nessuna_misura"> Nessuna misura strutturata</label>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Frequenza backup</label>
+          <select name="freq_backup">
+            <option>Non eseguiti</option>
+            <option>In tempo reale / continuo</option>
+            <option>Quotidiano</option>
+            <option>Settimanale</option>
+            <option>Mensile</option>
+            <option>Non so</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>I backup vengono testati (ripristino)?</label>
+          <select name="test_backup">
+            <option>No / Mai</option>
+            <option>Sì, regolarmente</option>
+            <option>Non lo so</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Dove sono conservati i backup?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="dove_backup" value="solo_locale"> Solo in locale</label>
+          <label><input type="radio" name="dove_backup" value="cloud"> Solo cloud</label>
+          <label><input type="radio" name="dove_backup" value="3-2-1"> Entrambi (regola 3-2-1)</label>
+          <label><input type="radio" name="dove_backup" value="nonso"> Non so</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Gestione Accessi & Business Continuity</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Politica IAM / RBAC (minimo privilegio)?</label>
+          <select name="iam">
+            <option>No</option>
+            <option>Sì, formale e applicata</option>
+            <option>Informale</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Processo di offboarding ex-dipendenti?</label>
+          <select name="offboarding">
+            <option>No, non c'è processo</option>
+            <option>Sì, formalizzato</option>
+            <option>A volte ci si dimentica</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Piano di Incident Response?</label>
+          <select name="incident_response">
+            <option>No</option>
+            <option>Sì, documentato e testato</option>
+            <option>Sì, ma non testato</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Piano Business Continuity (BCP/DRP)?</label>
+          <select name="bcp">
+            <option>No</option>
+            <option>Sì</option>
+            <option>In fase di creazione</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button type="button" class="btn btn-secondary" onclick="prevStep()">← Indietro</button>
+      <button type="button" class="btn btn-primary" onclick="nextStep()">Continua — Team & Ruoli →</button>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════ STEP 6 ══╗ -->
+  <div class="form-section" data-step="6">
+    <div class="section-header">
+      <div class="section-icon" style="background:linear-gradient(135deg,#f59e0b33,#f59e0b66)">👥</div>
+      <div>
+        <h2>Sezione 6 — Team, Ruoli & Budget</h2>
+        <p>Organigramma, gap analysis delle risorse, budget e fasi del ciclo di vita</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Ruoli Disponibili vs. Da Reperire</div>
+      <div style="overflow-x:auto">
+        <table class="table-input">
+          <thead>
+            <tr>
+              <th>Ruolo</th>
+              <th>Disponibile?</th>
+              <th>Interno / Esterno</th>
+              <th>Se mancante: come reperire</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Product Owner / CEO</td><td><select name="r_po"><option>Sì</option><option>No</option><option>Parziale</option></select></td><td><select name="r_po_t"><option>Interno</option><option>Esterno</option></select></td><td><input type="text" name="r_po_note" placeholder="—" /></td></tr>
+            <tr><td>Project Manager</td><td><select name="r_pm"><option>No</option><option>Sì</option><option>Parziale</option></select></td><td><select name="r_pm_t"><option>Esterno</option><option>Interno</option></select></td><td><input type="text" name="r_pm_note" placeholder="Freelance / SECURDATA" /></td></tr>
+            <tr><td>AI/ML Engineer</td><td><select name="r_ai"><option>No</option><option>Sì</option><option>Parziale</option></select></td><td><select name="r_ai_t"><option>Esterno</option><option>Interno</option></select></td><td><input type="text" name="r_ai_note" placeholder="SECURDATA.PRO" /></td></tr>
+            <tr><td>Frontend Developer</td><td><select name="r_fe"><option>No</option><option>Sì</option><option>Parziale</option></select></td><td><select name="r_fe_t"><option>Esterno</option><option>Interno</option></select></td><td><input type="text" name="r_fe_note" placeholder="Freelance" /></td></tr>
+            <tr><td>Backend Developer</td><td><select name="r_be"><option>No</option><option>Sì</option><option>Parziale</option></select></td><td><select name="r_be_t"><option>Esterno</option><option>Interno</option></select></td><td><input type="text" name="r_be_note" placeholder="SECURDATA.PRO" /></td></tr>
+            <tr><td>Security Expert / CISO</td><td><select name="r_sec"><option>No</option><option>Sì</option><option>Parziale</option></select></td><td><select name="r_sec_t"><option>Esterno</option><option>Interno</option></select></td><td><input type="text" name="r_sec_note" placeholder="SECURDATA.PRO" /></td></tr>
+            <tr><td>UX/UI Designer</td><td><select name="r_ux"><option>No</option><option>Sì</option><option>Parziale</option></select></td><td><select name="r_ux_t"><option>Esterno</option><option>Interno</option></select></td><td><input type="text" name="r_ux_note" placeholder="Freelance" /></td></tr>
+            <tr><td>DPO / Legale Privacy</td><td><select name="r_dpo"><option>No</option><option>Sì</option><option>Parziale</option></select></td><td><select name="r_dpo_t"><option>Esterno</option><option>Interno</option></select></td><td><input type="text" name="r_dpo_note" placeholder="Consulente esterno" /></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Note Aggiuntive & Messaggi al Team SECURDATA.PRO</div>
+      <div class="field">
+        <label>C'è qualcosa di importante che non abbiamo chiesto e che vuoi comunicarci?</label>
+        <textarea name="note_libere" placeholder="Descrivere vincoli particolari, aspettative specifiche, esperienze passate negative da evitare, priorità assolute..." style="min-height:100px"></textarea>
+      </div>
+      <div class="field">
+        <label>Come hai conosciuto SECURDATA.PRO?</label>
+        <select name="come_conosciuto">
+          <option value="">— Seleziona —</option>
+          <option>Ricerca Google</option>
+          <option>LinkedIn</option>
+          <option>Passaparola / Referral</option>
+          <option>Social media</option>
+          <option>Evento / Fiera</option>
+          <option>Già cliente</option>
+          <option>Altro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Consenso al trattamento dei dati (GDPR) <span class="req">*</span></label>
+        <label style="display:flex;align-items:flex-start;gap:10px;background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.2);border-radius:6px;padding:12px;margin-top:6px;font-weight:400;color:var(--gray-mid);cursor:pointer">
+          <input type="checkbox" name="consenso_gdpr" value="1" required style="width:auto;margin-top:2px;accent-color:var(--green)" />
+          <span>Acconsento al trattamento dei miei dati personali da parte di SECURDATA.PRO per finalità di analisi della richiesta, contatto commerciale e invio preventivo. I dati non saranno ceduti a terzi. Informativa completa su <a href="https://securdata.pro/privacy" target="_blank" style="color:var(--cyan)">securdata.pro/privacy</a>.</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button type="button" class="btn btn-secondary" onclick="prevStep()">← Indietro</button>
+      <button type="button" class="btn btn-success" onclick="showSummary()">✅ Genera Riepilogo & Invia →</button>
+    </div>
+  </div>
+
+</form><!-- end #prdForm -->
+
+<!-- ╔══════════════════════════════════════════ SUMMARY ══╗ -->
+<div id="summary-section">
+  <div class="section-header">
+    <div class="section-icon" style="background:linear-gradient(135deg,#00e5a033,#00e5a066)">📊</div>
+    <div>
+      <h2>Riepilogo Dataset Progetto</h2>
+      <p>Tabella riepilogativa delle informazioni raccolte — pronta per lo Studio di Fattibilità SECURDATA.PRO</p>
+    </div>
+  </div>
+
+  <div class="alert alert-success">✅ <span>Questionario completato! Il team SECURDATA.PRO riceverà i tuoi dati e ti contatterà entro <strong>2 giorni lavorativi</strong> per confermare la ricezione e fissare il colloquio di Studio di Fattibilità.</span></div>
+
+  <div id="summaryContent"></div>
+
+  <table class="dataset-table" id="datasetTable">
+    <thead>
+      <tr>
+        <th>Area</th>
+        <th>Campo chiave</th>
+        <th>Valore</th>
+        <th>Priorità</th>
+        <th>Stato</th>
+      </tr>
+    </thead>
+    <tbody id="datasetBody">
+    </tbody>
+  </table>
+
+  <div style="margin-top:2rem; display:flex; gap:1rem; flex-wrap:wrap">
+    <button type="button" class="btn btn-primary" onclick="submitForm()">📤 Invia a SECURDATA.PRO</button>
+    <button type="button" class="btn btn-secondary" onclick="window.print()">🖨️ Stampa / Salva PDF</button>
+    <button type="button" class="btn btn-secondary" onclick="exportCSV()">📥 Esporta CSV</button>
+    <button type="button" class="btn btn-secondary" onclick="location.reload()">🔄 Nuovo questionario</button>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p>© 2025 <a href="https://securdata.pro">SECURDATA.PRO</a> — Consulenza Sicurezza Dati & Integrazione AI | 
+  <a href="https://securdata.pro/privacy">Privacy Policy</a> | 
+  <a href="https://securdata.pro/contatti">Contatti</a></p>
+  <p style="margin-top:6px;color:#475569">Documento: PRD Questionnaire v2.0 — Risorsa Gratuita</p>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════ SCRIPT -->
+<script>
+/* ── STATE ──────────────────────────────────────────────────────── */
+const TOTAL_STEPS = 7;
+let currentStep = 0;
+let procRowCount = 1;
+let intRowCount = 1;
+
+const stepLabels = [
+  'Tipologia', 'Anagrafica', 'Business', 'Dataset & AI',
+  'Architettura', 'Sicurezza', 'Team & Invio'
+];
+
+/* ── INIT ───────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  buildStepBar();
+  updateUI();
+});
+
+function buildStepBar() {
+  const bar = document.getElementById('stepsBar');
+  const line = document.getElementById('progressLine');
+  bar.innerHTML = '';
+  bar.appendChild(line);
+  for (let i = 0; i < TOTAL_STEPS; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'step-dot' + (i === 0 ? ' active' : '');
+    dot.id = 'step-dot-' + i;
+    dot.innerHTML = `<div class="step-circle">${i + 1}</div>
+                     <div class="step-label">${stepLabels[i]}</div>`;
+    dot.onclick = () => jumpTo(i);
+    bar.appendChild(dot);
+  }
+}
+
+function updateUI() {
+  // sections
+  document.querySelectorAll('.form-section').forEach((s, i) => {
+    s.classList.toggle('active', i === currentStep);
+  });
+  // dots
+  for (let i = 0; i < TOTAL_STEPS; i++) {
+    const d = document.getElementById('step-dot-' + i);
+    if (!d) continue;
+    d.className = 'step-dot';
+    if (i < currentStep) d.classList.add('done');
+    else if (i === currentStep) d.classList.add('active');
+  }
+  // progress line
+  const pct = (currentStep / (TOTAL_STEPS - 1)) * 100;
+  document.getElementById('progressLine').style.width = pct + '%';
+  // scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextStep() {
+  if (currentStep < TOTAL_STEPS - 1) {
+    currentStep++;
+    updateUI();
+  }
+}
+
+function prevStep() {
+  if (currentStep > 0) {
+    currentStep--;
+    updateUI();
+  }
+}
+
+function jumpTo(i) {
+  if (i <= currentStep) {
+    currentStep = i;
+    updateUI();
+  }
+}
+
+/* ── RANGE SLIDERS ──────────────────────────────────────────────── */
+function updateRange(el) {
+  const min = +el.min, max = +el.max, val = +el.value;
+  const pct = ((val - min) / (max - min)) * 100;
+  el.style.setProperty('--val', pct + '%');
+
+  if (el.name === 'maturita_digitale') {
+    const labels = ['', '1 — Solo carta/telefono', '2 — Email/Office', '3 — Gestionale/CRM', '4 — Cloud/API', '5 — Data-driven/AI'];
+    document.getElementById('maturitaVal').textContent = labels[val] || 'Livello ' + val;
+  } else if (el.name === 'perc_digitale') {
+    document.getElementById('percDigitaleVal').textContent = val + '%';
+  }
+}
+
+/* ── DYNAMIC TABLE ROWS ─────────────────────────────────────────── */
+function addProcessRow() {
+  procRowCount++;
+  const n = procRowCount;
+  const tbody = document.getElementById('processiBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input type="text" name="proc_nome_${n}" placeholder="Nome processo" /></td>
+    <td><select name="proc_freq_${n}"><option>Quotidiana</option><option>Settimanale</option><option>Mensile</option></select></td>
+    <td><input type="text" name="proc_chi_${n}" placeholder="Chi" /></td>
+    <td><input type="number" name="proc_ore_${n}" min="0" max="40" placeholder="ore" /></td>
+    <td><select name="proc_prio_${n}"><option>Alta</option><option>Media</option><option>Bassa</option></select></td>`;
+  tbody.appendChild(tr);
+}
+
+function addIntegrazioniRow() {
+  intRowCount++;
+  const n = intRowCount;
+  const tbody = document.getElementById('integrazioniBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input type="text" name="int_nome_${n}" placeholder="Servizio/API" /></td>
+    <td><input type="text" name="int_scopo_${n}" placeholder="Scopo" /></td>
+    <td><select name="int_stato_${n}"><option>Pianificato</option><option>Attivo</option><option>Da valutare</option></select></td>
+    <td><input type="number" name="int_budget_${n}" placeholder="€/mese" /></td>`;
+  tbody.appendChild(tr);
+}
+
+/* ── FORM DATA COLLECTOR ────────────────────────────────────────── */
+function collectFormData() {
+  const form = document.getElementById('prdForm');
+  const data = {};
+  const fd = new FormData(form);
+
+  // singles
+  for (const [k, v] of fd.entries()) {
+    if (data[k]) {
+      if (Array.isArray(data[k])) data[k].push(v);
+      else data[k] = [data[k], v];
+    } else {
+      data[k] = v;
+    }
+  }
+  return data;
+}
+
+/* ── SUMMARY / DATASET TABLE ────────────────────────────────────── */
+function val(v) {
+  if (!v || v === '' || v === 'undefined') return '<span class="badge badge-nd">N/D</span>';
+  if (Array.isArray(v)) return v.join(', ');
+  return v;
+}
+
+function prio(p) {
+  const map = { A:'badge-high', M:'badge-med', B:'badge-low' };
+  return `<span class="badge ${map[p]||'badge-med'}">${p==='A'?'Alta':p==='M'?'Media':'Bassa'}</span>`;
+}
+
+function showSummary() {
+  // validate consent
+  const consent = document.querySelector('[name="consenso_gdpr"]');
+  if (consent && !consent.checked) {
+    alert('⚠️ Devi accettare il consenso al trattamento dei dati per procedere.');
+    return;
+  }
+
+  const d = collectFormData();
+
+  // hide form, show summary
+  document.getElementById('prdForm').style.display = 'none';
+  const summarySection = document.getElementById('summary-section');
+  summarySection.style.display = 'block';
+
+  // summary cards
+  const summaryContent = document.getElementById('summaryContent');
+  summaryContent.innerHTML = `
+    <div class="summary-grid">
+      <div class="summary-card">
+        <h4>🎯 Tipologia Progetto</h4>
+        <div class="summary-row"><span class="summary-key">Tipo</span><span class="summary-val">${val(d.tipo_progetto)}</span></div>
+        <div class="summary-row"><span class="summary-key">Uso</span><span class="summary-val">${val(d.uso_progetto)}</span></div>
+        <div class="summary-row"><span class="summary-key">Destinatario</span><span class="summary-val">${val(d.destinatario)}</span></div>
+        <div class="summary-row"><span class="summary-key">Settore</span><span class="summary-val">${val(d.settore)}</span></div>
+        <div class="summary-row"><span class="summary-key">Maturità digitale</span><span class="summary-val">${val(d.maturita_digitale)}/5</span></div>
+      </div>
+      <div class="summary-card">
+        <h4>📁 Anagrafica</h4>
+        <div class="summary-row"><span class="summary-key">Progetto</span><span class="summary-val">${val(d.nome_progetto)}</span></div>
+        <div class="summary-row"><span class="summary-key">Azienda</span><span class="summary-val">${val(d.ragione_sociale)}</span></div>
+        <div class="summary-row"><span class="summary-key">Referente</span><span class="summary-val">${val(d.referente_nome)}</span></div>
+        <div class="summary-row"><span class="summary-key">Email</span><span class="summary-val">${val(d.referente_email)}</span></div>
+        <div class="summary-row"><span class="summary-key">N° dipendenti</span><span class="summary-val">${val(d.num_dipendenti)}</span></div>
+      </div>
+      <div class="summary-card">
+        <h4>🤖 Dataset & AI</h4>
+        <div class="summary-row"><span class="summary-key">Dati pronti</span><span class="summary-val">${val(d.dati_pronti)}</span></div>
+        <div class="summary-row"><span class="summary-key">Tipi dati</span><span class="summary-val">${val(d.tipo_dati)}</span></div>
+        <div class="summary-row"><span class="summary-key">Labeling</span><span class="summary-val">${val(d.labeling_stato)}</span></div>
+        <div class="summary-row"><span class="summary-key">Q&A esistente</span><span class="summary-val">${val(d.qa_stato)}</span></div>
+        <div class="summary-row"><span class="summary-key">Deploy AI</span><span class="summary-val">${val(d.ai_deploy)}</span></div>
+      </div>
+      <div class="summary-card">
+        <h4>🔒 Sicurezza</h4>
+        <div class="summary-row"><span class="summary-key">Incidenti passati</span><span class="summary-val">${val(d.incidenti_passati)}</span></div>
+        <div class="summary-row"><span class="summary-key">Normative</span><span class="summary-val">${val(d.normative)}</span></div>
+        <div class="summary-row"><span class="summary-key">Backup</span><span class="summary-val">${val(d.freq_backup)}</span></div>
+        <div class="summary-row"><span class="summary-key">Backup testati</span><span class="summary-val">${val(d.test_backup)}</span></div>
+        <div class="summary-row"><span class="summary-key">Incident Response</span><span class="summary-val">${val(d.incident_response)}</span></div>
+      </div>
+    </div>`;
+
+  // dataset table
+  const rows = [
+    ['Tipologia', 'Tipo progetto', d.tipo_progetto, 'A'],
+    ['Tipologia', 'Destinatario finale', d.destinatario, 'A'],
+    ['Contesto', 'Settore', d.settore, 'A'],
+    ['Contesto', 'Mercato geografico', d.mercato_geo, 'M'],
+    ['Contesto', 'Maturità digitale (1–5)', d.maturita_digitale, 'M'],
+    ['Contesto', 'IT interno', d.it_interno, 'M'],
+    ['Contesto', 'Exp. precedenti AI', d.exp_ai, 'M'],
+    ['AI/Dati', 'Dati già disponibili', d.dati_pronti, 'A'],
+    ['AI/Dati', 'Tipologie dati', d.tipo_dati, 'A'],
+    ['AI/Dati', 'Qualità dati', d.qualita_dati, 'A'],
+    ['AI/Dati', 'Labeling completato', d.labeling_stato, 'A'],
+    ['AI/Dati', 'Q&A già esistente', d.qa_stato, 'A'],
+    ['AI/Dati', 'Deploy AI', d.ai_deploy, 'A'],
+    ['AI/Dati', 'Explainability richiesta', d.explainability, 'M'],
+    ['AI/Dati', 'Audit log AI', d.audit_ai, 'M'],
+    ['AI/Dati', 'N° persone da formare', d.n_da_formare, 'M'],
+    ['Sicurezza', 'Incidenti precedenti', d.incidenti_passati, 'A'],
+    ['Sicurezza', 'Normative applicabili', d.normative, 'A'],
+    ['Sicurezza', 'DPO nominato', d.dpo, 'A'],
+    ['Sicurezza', 'Registro Trattamenti', d.registro_trattamenti, 'A'],
+    ['Sicurezza', 'Backup attivi', d.freq_backup, 'A'],
+    ['Sicurezza', 'Backup testati', d.test_backup, 'A'],
+    ['Sicurezza', 'MFA attivo', d.misure ? (Array.isArray(d.misure)?d.misure.includes('mfa'):d.misure==='mfa'?'Sì':'No') : 'N/D', 'A'],
+    ['Sicurezza', 'Incident Response', d.incident_response, 'A'],
+    ['Sicurezza', 'Piano BCP/DRP', d.bcp, 'A'],
+    ['Business', 'Value Proposition', d.value_prop, 'A'],
+    ['Business', 'Modello revenue', d.modello_revenue, 'A'],
+    ['Business', 'Budget sviluppo', d.budget_sviluppo, 'A'],
+    ['Business', 'Budget manutenzione', d.budget_manutenzione, 'M'],
+    ['Business', 'Finanziamento', d.finanziamento, 'M'],
+    ['Timeline', 'Data target MVP', d.data_mvp, 'A'],
+    ['Timeline', 'Scadenza hard', d.scadenza_target, 'A'],
+    ['Team', 'N° dipendenti azienda', d.num_dipendenti, 'M'],
+    ['Team', 'Gestione post-lancio', d.gestione_postlancio, 'M'],
+    ['Contatti', 'Referente principale', d.referente_nome, 'A'],
+    ['Contatti', 'Email referente', d.referente_email, 'A'],
+    ['Contatti', 'Telefono referente', d.referente_tel, 'A'],
+  ];
+
+  const tbody = document.getElementById('datasetBody');
+  tbody.innerHTML = '';
+  rows.forEach(([area, campo, valore, priorita]) => {
+    const tr = document.createElement('tr');
+    const displayVal = (!valore || valore === '') ? '<span class="badge badge-nd">N/D</span>' :
+                       Array.isArray(valore) ? valore.join(', ') : valore;
+    const stato = (!valore || valore === '') ?
+      '<span class="badge badge-no">Da compilare</span>' :
+      '<span class="badge badge-yes">Compilato</span>';
+    tr.innerHTML = `<td>${area}</td><td>${campo}</td><td>${displayVal}</td><td>${prio(priorita)}</td><td>${stato}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── SUBMIT (demo — replace with actual endpoint) ───────────────── */
+function submitForm() {
+  const d = collectFormData();
+
+  // In production: send to backend endpoint
+  // fetch('/api/questionario', { method: 'POST', body: JSON.stringify(d), headers: {'Content-Type':'application/json'} })
+
+  alert(`✅ Grazie ${d.referente_nome || ''}!\n\nIl tuo questionario è stato inviato a SECURDATA.PRO.\nVerrai contattato all'indirizzo ${d.referente_email || 'fornito'} entro 2 giorni lavorativi.\n\nRiferimento progetto: ${d.nome_progetto || 'Nuovo progetto'}`);
+}
+
+/* ── CSV EXPORT ─────────────────────────────────────────────────── */
+function exportCSV() {
+  const d = collectFormData();
+  let csv = 'Campo;Valore\n';
+  for (const [k, v] of Object.entries(d)) {
+    const val = Array.isArray(v) ? v.join(' | ') : v;
+    csv += `"${k}";"${String(val).replace(/"/g, '""')}"\n`;
+  }
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `PRD_${d.nome_progetto || 'progetto'}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
